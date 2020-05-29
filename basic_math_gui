@@ -1,0 +1,90 @@
+from tkinterFinal_Class import *
+
+def main():
+    my_gui = Math()
+
+main()
+
+# Code for the class object below
+
+import tkinter
+import tkinter.messagebox
+
+# Write a tkinter application that allows the user to enter two numbers in two different Entry widgets. When the user
+# clicks a Button, the two numbers are added and the resulting equation is added to a Listbox. For example, if the user
+# enters “2” in one Entry and “5” in the second Entry, the string “2 + 5 = 7” should be added to the Listbox when the
+# Button is clicked.If non-numeric values are entered into either Entry widget, show a messagebox asking the user to
+# enter numeric values only.
+
+# 1: Create Frames for each widget to keep your gui organized.
+# 2: Create Entry widgets.
+# 3: Create identifier labels for each entry widget.
+# 4: Create a listbox.
+# 5: Create the calculate button.
+# 6: Create a method to add the values.
+# 7: Create method to add the equation to the listbox and display it.
+# 8: Create data-type error handling.
+
+class Math:
+    def __init__(self):
+        self._main_window = tkinter.Tk()
+        self._main_window.title("Basic Math Calculator")
+
+        self.build_frames()
+        self.build_entry_widgets()
+        self.build_listbox()
+        self.build_button()
+
+        self._main_window.mainloop()
+
+    def build_frames(self):
+        # Frames for each widget. Creates for organization.
+        self._frame1 = tkinter.Frame(self._main_window)
+        self._frame1.pack()
+
+        self._frame2 = tkinter.Frame(self._main_window)
+        self._frame2.pack()
+
+        self._frame3 = tkinter.Frame(self._main_window)
+        self._frame3.pack()
+
+    def build_entry_widgets(self):
+        # Entry widgets and their corresponding identifier labels.
+        self._label1 = tkinter.Label(self._frame1, text='Enter your first number below')
+        self._label1.pack()
+        self._num1 = tkinter.Entry(self._frame1, width=20)
+        self._num1.pack(padx=25, pady=5)
+
+        self._num2 = tkinter.Entry(self._frame2, width=20)
+        self._num2.pack(padx=25, pady=5)
+        self._label2 = tkinter.Label(self._frame1, text='Enter your second number below')
+        self._label2.pack()
+
+    def build_listbox(self):
+        self._listbox_identifier = tkinter.Label(self._frame3, text='Equations:')
+        self._listbox_identifier.pack(pady=5)
+        self._listbox = tkinter.Listbox(self._frame3, width=50)
+        self._listbox.pack(padx=25)
+
+        self._scrollbar = tkinter.Scrollbar(self._frame3, orient=tkinter.VERTICAL)
+        self._scrollbar.pack(side='right', fill=tkinter.Y)
+        self._scrollbar.config(command=self._listbox.yview)
+
+        self._listbox.config(yscrollcommand=self._scrollbar.set)
+
+    def build_button(self):
+        self._calc_button = tkinter.Button(self._frame3, text='Calculate', command=self.get_values)
+        self._calc_button.pack(pady=15)
+
+    def get_values(self):
+        num1 = self._num1.get()
+        num2 = self._num2.get()
+        if num1.isdigit() and num2.isdigit():
+            answer = int(num1) + int(num2)
+            self.add_values(num1, num2, answer)
+        else:
+            tkinter.messagebox.showinfo("Error", "Enter numeric values only.")
+
+
+    def add_values(self, num1, num2, answer):
+        self._listbox.insert(tkinter.END, f"{str(num1)} + {str(num2)} = {str(answer)}")
