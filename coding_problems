@@ -1,0 +1,29 @@
+#Here are some of the coding assignments I did in my python programming class.
+def add_employee():
+    with open('data/employees.txt', "a") as file:
+        name = input("Please enter the jerks stupid name. ")
+        file.write(name + "\n")
+    print("Employee added.")
+    print()
+    view_employees()
+
+def view_employees():
+    print("Current employees: ")
+    print()
+    with open('data/employees.txt', "r") as employee_file:
+        for name in employee_file.readlines():  # Changed from readline() to readlines() ... Yep
+            print(name, end="")
+    print()
+
+
+def main():
+    result = 0
+    while result != 'q':
+        result = input("Press 1 to add an employee, 2 to view employees, 'q' to quit. ")
+        if result.isdigit() and int(result) == 1:
+            add_employee()
+        elif result.isdigit() and int(result) == 2:
+            view_employees()
+
+
+main()
