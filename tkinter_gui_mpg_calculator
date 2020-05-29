@@ -1,0 +1,83 @@
+# Write a tkinter application with two Entry widgets. They user should enter how many miles they have driven in their
+# car and how many gallons of gas they have used.
+
+#When they click the ‘Calculate’ button, the miles per gallon should be calculated and displayed in a Label. If the user
+# enters non-numeric data, show an error messagebox informing them that they need to enter numbers.
+
+from final_tkinter_class import *
+
+def main():
+    my_mpg = Calculator()
+
+
+main()
+
+# Code for the tkinter gui class object below.
+
+import tkinter
+import tkinter.messagebox
+
+# Stanley G. Zezotarski
+
+# Write a tkinter application with two Entry widgets. They user should enter how many miles they have driven in their
+# car and how many gallons of gas they have used.
+#
+# When they click the ‘Calculate’ button, the miles per gallon should be calculated and displayed in a Label. If the
+# user enters non-numeric data, show an error messagebox informing them that they need to enter numbers.
+#
+# 1: create frames to hold each widget
+# 2: Create entry labels
+# 3: Create labels denoting what each entry box does, and place them in the same frame as that box
+# 4: Create calculate button
+# 5: Create data processing method to be called by the calculate button.
+# 6: Create label to display the data processed by the calculate button, place it in the same frame as the calc button.
+# 7: Create error handling.
+
+class Calculator:
+    def __init__(self):
+        self._main_window = tkinter.Tk()
+        self._main_window.title("Miles per gallon calculator.")
+
+        # The first frame is for the first entry widget and the label denoting what it does.
+        self._frame1 = tkinter.Frame(self._main_window)
+        self._frame1.pack(side='left')
+        self._miles_label = tkinter.Label(self._frame1, relief='solid', text='Enter the amount of miles driven below')
+        self._miles_label.pack(padx=10)
+        self._miles = tkinter.Entry(self._frame1)
+        self._miles.pack(pady=15)
+
+
+        # The second frame is for the second entry widget and the label denoting what it does.
+        self._frame2 = tkinter.Frame(self._main_window)
+        self._frame2.pack(side='left')
+        self._gas_label = tkinter.Label(self._frame2, relief='solid', text='Enter the amount of gas used below')
+        self._gas_label.pack(padx=10)
+        self._gas = tkinter.Entry(self._frame2)
+        self._gas.pack(pady=15)
+
+        # Here I instantiate a string variable so that I can display the data produced by the submit button in a label
+        # instead of in a messagebox.
+        self._mpg_str = tkinter.StringVar()
+
+        # The third frame is for the calculate button and its output.
+        self._frame3 = tkinter.Frame(self._main_window)
+        self._frame3.pack(side='left')
+        self._calc_button = tkinter.Button(self._frame3, text='Calculate MPG', command=self.calculate_mpg)
+        self._calc_button.pack()
+        self._mpg_label = tkinter.Label(self._frame3, width=50, textvariable=self._mpg_str)
+        self._mpg_label.pack()
+
+        self.build_frames()
+
+        self._main_window.mainloop()
+
+    def calculate_mpg(self):
+        miles = self._miles.get()
+        gas = self._gas.get()
+
+        # I used not .isdigit() so because .isalpha() didn't handle for characters that were non alpha-numeric.
+        if not miles.isdigit() or not gas.isdigit():
+            tkinter.messagebox.showinfo("Error", "The calculator may only accept numeric values")
+        else:
+            mpg = int(miles) / int(gas)
+            self._mpg_str.set(f"The miles per gallon is about: {str(round(mpg, 1))}")
