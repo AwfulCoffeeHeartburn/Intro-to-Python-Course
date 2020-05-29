@@ -1,0 +1,75 @@
+from Final_Practice_Class import *
+
+stars = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0
+}
+
+def main():
+    my_movie = Movie("Ass-Queefs Unlimited", stars)
+    # bad_movie = Movie("Shitheads Unite", stars)
+
+    print(my_movie)
+
+    my_movie.add_review(5)
+    my_movie.add_review(5)
+    my_movie.add_review(5)
+    print(my_movie)
+
+    print(my_movie.get_average())
+
+
+main()
+
+# Code for class object
+
+#Write a class Movie. It should have attributes for the following data:○The movie’s name.○A dictionary initialized with
+# 5 key/value pairs: The keys should be the numbers 1 through 5, and each value should be initialized to 0. The values
+# signify how many reviews the movie has received with that many stars. i.e., If key 1 is paired with the value 3, that
+# means three users have given the movie 1 star.○An int variable num_reviews, which tracks how many reviews the film has
+# received. ○A constructor that accepts the movie’s name as an argument, sets num_reviews to 0, and initializes the
+# dictionary’s key/value pairs
+
+# It should have the following methods:○A property setter and getter for the movie’s name.○add_review, which can only be
+# passed the values 1 through 5. As an example, if ‘2’ is passed, that means a review of 2 stars is being added:
+# increment the value associated with the key ‘2’ by one.○
+
+
+
+class Movie:
+    def __init__(self, name, dictionary):
+        self._name = name
+        if type(dictionary) is not dict:
+            raise ValueError("You must submit a valid dictionary.")
+        self._stars = dictionary
+        self._num_reviews = 0
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
+
+    def __str__(self):
+        return (f"{self._name} \nReviews: {str(self._num_reviews)} \n5 Stars: {str(self._stars[5])} \n"
+              f"4 Stars: {str(self._stars[4])} \n3 Stars: {str(self._stars[3])} \n2 Stars: {str(self._stars[2])} \n"
+              f"1 Stars: {str(self._stars[1])}")
+
+    def add_review(self, num):
+        if int(num) < 1 or int(num) > 5:
+            print(f"Invalid rating: {str(num)}. The user may only select a star option of 1-5.")
+            return
+        self._stars[num] += 1
+        self._num_reviews += 1
+
+    def get_average(self):
+        total = 0
+        for key, value in self._stars.items():
+            total += key * value
+        average = total / self._num_reviews
+        return (f"The average rating is: {str(average)} stars.")
