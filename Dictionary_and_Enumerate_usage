@@ -1,0 +1,31 @@
+teams = {}
+
+def load_data():
+    with open("worldserieswinnders.txt") as file:
+        for year, team in enumerate(file, start=1903):
+            team = team.lower().strip()
+            if team not in teams:
+                teams[team] = [year]
+            else:
+                teams[team].append(year)
+
+        #for team, years in teams.items():
+        #    print(team + str(teams[team]))
+
+def find_wins(team):
+    if team in teams:
+        print("The " + team + " won the world series in: ")
+        for year in teams[team]:
+            print(year)
+    else:
+        print(f"{team} is not in the database.")
+
+def main():
+    load_data()
+    while True:
+        selection = input("Look up a team.").lower()
+        if selection == 'q':
+            break
+        find_wins(selection)
+
+main()
