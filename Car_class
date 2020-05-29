@@ -1,0 +1,32 @@
+from car import Car
+
+my_new_car = Car("Tesla", "Model S", 2019)
+print(my_new_car.get_descriptive_name())
+
+# The following is the code for the class object
+
+#This module stores the basic Car class.
+
+class Car:
+    #A car model.
+    def __init__(self, make, model, year):
+        #Initializing the car attributes.
+        self.make = make
+        self.model = model
+        self.year = year
+        self.odometer = 0
+
+
+    def get_descriptive_name(self):
+        #Return a formatted descriptive name.
+        long_name = f"{self.year} {self.make} {self.model}, This car has " \
+                    f"{self.odometer} miles on it."
+        return long_name.title()
+
+    def update_odometer(self, mileage):
+        #Change the mileage (value of odometer) of the vehicle.
+        #Don't let anyone roll back the odometer.
+        if mileage >= self.odometer:
+            self.odometer = mileage
+        else:
+            print("You're going to prison.")
