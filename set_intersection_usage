@@ -1,0 +1,29 @@
+def main():
+
+    set1 = set()
+    set2 = set()
+
+    with open("first_file.txt") as file:
+        for word in file.read().split():
+            set1.add(word)
+
+    with open("second_file.txt") as file:
+        for word in file.read().split():
+            set2.add(word)
+
+    #print("The words that appear in first_file are: ")
+    #for word in set1:
+    #    print(f"{word} \n")
+
+    #print("The words that appear in second_file are: ")
+    #for word in set2:
+    #    print(f"{word} \n")
+
+    both = set1.intersection(set2)
+
+    print("The following words are in both files: ")
+    for word in both:
+        print(word, end=" ")
+
+
+main()
