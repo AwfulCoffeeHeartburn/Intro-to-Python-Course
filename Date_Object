@@ -1,0 +1,34 @@
+#Initially these were two seperate files.
+#Client program has other modules imported to it.
+#This is the client program.
+from Date import *
+
+def main():
+    birthday = Date(16, 5)
+    new_years = Date(1, 1)
+
+    print(birthday.day)
+    #print(birthday.get_days_month())
+    #print(new_years.get_days_month())
+
+main()
+
+#The following was saved in a seperate file alled Date.py
+
+class Date:
+    #pass  #Pass is a placeholder to tell Python to refrain from giving you an error.
+    def __init__(self, day, month):
+        print("The constructor was called.")
+        self.day = day
+        self.month = month
+
+    def get_month(self):
+        return self.month
+
+    def get_days_month(self):
+        if self.month in (4, 6, 9, 11):
+            return 30
+        elif self.month == 2:
+            return 28
+        else:
+            return 31
