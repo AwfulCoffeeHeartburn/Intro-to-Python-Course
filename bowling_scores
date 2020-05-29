@@ -1,0 +1,72 @@
+def main():
+    with open("scores.txt", "a") as file:
+        while True:
+            usr_input = input("Press 'q' to quit, 'v' to view scores, 'add' to add a score,"
+                              " 'average'  to see the average scores.")
+            if usr_input == 'q':
+                return
+            if usr_input == 'v':
+                view_scores()
+            if usr_input == 'add':
+                add_scores()
+            if usr_input == 'average':
+                average_scores()
+
+def view_scores():
+    with open("scores.txt") as file:
+        for line in file.readlines():
+            month, day, *scores = line.split()
+            print("On " + str(day) + " of " + str(month) + ", The scores were: "
+              + str(scores))
+
+def add_scores():
+    with open("scores.txt", "a") as file:
+        month = (input("Please enter the month ") + " ")
+        day = input("Please enter the day. ")
+
+        if score_exists_for_date(month, day):
+            print("That date already has an entry.")
+            return
+        if day.isdigit():
+            if int(day) < 32 and int(day) > 0:
+                file.writelines(str(day) + " ")
+                file.writelines(month)
+                while True:
+                    scores = input("Please enter the score(s), press 'q' to quit. ")
+                    if scores == 'q':
+                        file.writelines("\n")
+                        break
+                    elif int(scores) > 300 or int(scores) < 0:
+                        print("You entered an invalid score, cheater.")
+                    else:
+                        file.writelines(str(scores) + " ")
+
+            else:
+                print("Please enter an integer that corresponds to an existing day"
+                " within the specified month.")
+                return
+
+
+
+def average_scores():
+    running_total = 0
+    divisor = 0
+    with open("scores.txt") as file:
+        for line in file.readlines():
+            month, day, *scores = line.split()
+            for score in scores:
+                running_total = running_total + int(score)
+                divisor += 1
+    average = running_total / divisor
+    print(str(average))
+
+def score_exists_for_date(month2, day2):
+    with open("scores.txt", "r") as file:
+        for line in file:
+            if month2 and day2 in line.split():
+                return True
+
+
+
+
+main()
