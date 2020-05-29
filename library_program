@@ -1,0 +1,51 @@
+#You are writing an inventory system for a library. This program will allow
+#the user to enter a book, remove a book, and find a book. The book titles will
+#be stored in a dictionary. Each key in the dictionary is a book’s title, and
+#each value is the number of copies currently in stock
+
+#Stanley G. Zezotarski
+
+books = {}
+
+def main():
+    while True:
+        book = input("Please select from the following:  "
+                     "add, find, remove or press q to quit.").lower().strip()
+        if book == 'q':
+            break
+        if book == 'add':
+            add_book()
+        if book == 'find':
+            find_book()
+        if book == 'remove':
+            remove_book()
+
+
+
+def add_book():
+    new_book = input("What is the name of the book you'd like to add?").lower().strip()
+    if new_book in books:
+        print("This book is already in stock.")
+        books[new_book] += 1
+    else:
+        books[new_book] = 1
+
+def find_book():
+    search_book = input("What title are you searching for?").lower().strip()
+    if search_book in books:
+        print(f"There are {books[search_book]} copies of {search_book} in stock.")
+    else:
+        print(f"There aren't any copies of {search_book} in stock.")
+
+def remove_book():
+    ban_book = input("Which book would you like to remove?").lower().strip()
+    if ban_book in books:
+        if books[ban_book] == 1:
+            del books[ban_book]
+        elif books[ban_book] > 1:
+            books[ban_book] -= 1
+    else:
+        print("That ain't here dog.")
+
+
+main()
