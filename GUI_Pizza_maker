@@ -1,0 +1,266 @@
+from ExtraCreditClass import *
+# Write a tkinter application that asks the user to create their own pizza.
+# First, they should enter their name.
+
+# Then, allow them to pick from one of three crusts, one of three sauces, and any number of
+# 3 toppings, and small, medium, or large.
+
+# When the submit button is clicked, calculate the total cost ($10 base price, $0.50 for each
+# topping, and $1.50 for each increase in size larger than small).
+
+# Once the total is calculated, display a Messagebox that thanks the user (by name) for their
+# order and prints out the total cost.
+
+def main():
+    my_gui = Pizza()
+
+
+main()
+
+# Source code for the class file:
+
+# Stanley G. Zezotarski
+
+# Write a tkinter application that asks the user to create their own pizza.
+# First, they should enter their name.
+
+# Then, allow them to pick from one of three crusts, one of three sauces, and any number of
+# 3 toppings, and small, medium, or large.
+
+# When the submit button is clicked, calculate the total cost ($10 base price, $0.50 for each
+# topping, and $1.50 for each increase in size larger than small).
+
+# Once the total is calculated, display a Messagebox that thanks the user (by name) for their
+# order and prints out the total cost.
+
+import tkinter
+
+# I've imported tkinter.messagebox to display the user's finalized order.
+import tkinter.messagebox
+
+# I found the locale function on the internet. I'm importing it so I can use it to display the total cost of the user's
+# order in currency form, rather than just as a decimal number.
+import locale
+# Evidently the locale.setlocale statement below is required, I guess it must set the currency to whatever your local
+# currency is. That's neat. I vaguely recall there being a different way to display currency, but I couldn't remember it
+# if there is one.
+locale.setlocale(locale.LC_ALL, '')
+
+
+class Pizza:
+    def __init__(self):
+        self._main_window = tkinter.Tk()
+        self._main_window.title("Pizza Making Options")
+
+        # IntVar object for the crusts
+        self._crust_var = tkinter.IntVar()
+        # IntVar object for the sauces
+        self._sauce_var = tkinter.IntVar()
+        # IntVar object for the sizes
+        self._size_var = tkinter.IntVar()
+
+        # IntVar for first check button
+        self._top1_var = tkinter.IntVar()
+        # IntVar for second check button
+        self._top2_var = tkinter.IntVar()
+        # IntVar for third check button
+        self._top3_var = tkinter.IntVar()
+
+        # Frame for the crusts
+        self._frame_one = tkinter.Frame(self._main_window)
+        self._frame_one.pack(side='left')
+
+        # Frame for the sauce
+        self._frame_two = tkinter.Frame(self._main_window)
+        self._frame_two.pack(side='left')
+
+        # Frame for the toppings
+        self._frame_three = tkinter.Frame(self._main_window)
+        self._frame_three.pack(side='left')
+
+        # Frame for the sizes
+        self._frame_four = tkinter.Frame(self._main_window)
+        self._frame_four.pack(side='left')
+
+        # Frame for the submit button & the label that displays its info.
+        self._frame_five = tkinter.Frame(self._main_window)
+        self._frame_five.pack(side='bottom')
+        self._display_label = tkinter.Label(self._frame_five)
+        self._display_label.pack()
+
+        # Labels within each frame. I made these so I could create solid labels separating each group of options
+        # from one another.
+        self._holder_label1 = tkinter.Label(self._frame_one, relief='solid')
+        self._holder_label1.pack()
+        self._holder_label2 = tkinter.Label(self._frame_two, relief='solid')
+        self._holder_label2.pack()
+        self._holder_label3 = tkinter.Label(self._frame_three, relief='solid')
+        self._holder_label3.pack()
+        self._holder_label4 = tkinter.Label(self._frame_four, relief='solid')
+        self._holder_label4.pack()
+
+        # For the name we'll need an entry box, then we'll need to call the get method on the entry box.
+        # I added a label here to indicate the purpose of the text entry box by asking for the user's name.
+        # I made the width 35 pixels because some people have really long names.
+        self._name_inquisitor = tkinter.Label(self._frame_five, text="Please enter a name for the order below.")
+        self._name_inquisitor.pack()
+        self._name = tkinter.Entry(self._frame_five, width=35)
+        self._name.pack()
+
+        # The code for the submit button is below. The command for the get selected method
+        # is in the submit button object.
+        self._submit_button = tkinter.Button(self._frame_five, text="Submit", command=self.get_selected)
+        self._submit_button.pack()
+
+        # For the crusts we'll use radio buttons
+        # Remember to link related radio buttons together. To associate radio buttons with one another
+        # give them all the same intVar object.
+        self._button_one = tkinter.Radiobutton(self._holder_label1, text='Thin crust',
+                                               variable=self._crust_var, value=0)
+        self._button_one.pack()
+        self._button_two = tkinter.Radiobutton(self._holder_label1, text='Cheesy crust',
+                                               variable=self._crust_var, value=1)
+        self._button_two.pack()
+        self._button_three = tkinter.Radiobutton(self._holder_label1, text='BEETLE CARAPACE',
+                                                 variable=self._crust_var, value=2)
+        self._button_three.pack()
+
+        # For the sauce we'll use radio buttons
+        self._sauce_one = tkinter.Radiobutton(self._holder_label2, text='Tomato sauce',
+                                            variable=self._sauce_var, value=0)
+        self._sauce_one.pack()
+        self._sauce_two = tkinter.Radiobutton(self._holder_label2, text='Pesto suace',
+                                            variable=self._sauce_var, value=1)
+        self._sauce_two.pack()
+        self._sauce_three = tkinter.Radiobutton(self._holder_label2, text='ADRENOCHROME',
+                                              variable=self._sauce_var, value=2)
+        self._sauce_three.pack()
+
+        # For the toppings we'll use check boxes
+        self._top_one = tkinter.Checkbutton(self._holder_label3, text='Pepperoni', variable=self._top1_var)
+        self._top_one.pack()
+        self._top_two = tkinter.Checkbutton(self._holder_label3, text='Mushroom', variable=self._top2_var)
+        self._top_two.pack()
+        self._top_three = tkinter.Checkbutton(self._holder_label3, text='LAB DISH STEM CELLS', variable=self._top3_var)
+
+        self._top_three.pack()
+
+        # For the size we'll use radio buttons
+        self._small = tkinter.Radiobutton(self._holder_label4, text='Small',
+                                          variable=self._size_var, value=0)
+        self._small.pack()
+        self._medium = tkinter.Radiobutton(self._holder_label4, text='Medium',
+                                           variable=self._size_var, value=1)
+        self._medium.pack()
+        self._gluttony = tkinter.Radiobutton(self._holder_label4, text='GLUTTONY',
+                                             variable=self._size_var, value=2)
+        self._gluttony.pack()
+
+        self._main_window.mainloop()
+
+        # Here is the function in the submit button.
+    def get_selected(self):
+        # $10 base price, $0.50 for each topping, and $1.50 for each increase in size larger than small
+        crust = self._crust_var.get()
+        sauce = self._sauce_var.get()
+        size = self._size_var.get()
+
+        top1 = self._top1_var.get()
+        top2 = self._top2_var.get()
+        top3 = self._top3_var.get()
+
+        topping1, topping2, topping3 = topping_translation(top1, top2, top3)
+
+        counter = top1 + top2 + top3
+        topping_price = topping_pricer(counter)
+
+        base = 10
+        size_cost = size_price(size)
+        total = float(base) + float(size_cost) + float(topping_price)
+
+        crust_value = crust_translation(crust)
+        sauce_value = sauce_translation(sauce)
+        size_value = size_translation(size)
+
+        tkinter.messagebox.showinfo(f"Order", f"Hello {str(self._name.get())}, thank you for your business. "
+                                              f"You've ordered a {str(size_value)} pizza"
+                                              f" with {crust_value} crust, {str(sauce_value)} sauce, {str(topping1)}, "
+                                              f"{str(topping2)}, and {str(topping3)}. Your total comes to "
+                                              f"{str(locale.currency(total))}")
+
+
+# Functions for the conditional statements that allow the program to determine what radio button/check button translates
+# to which crust, sauce and size are located below, as well as methods for calculating the total price.
+
+# Here is where we determine which crust the user selected.
+def crust_translation(crust):
+    if crust == 0:
+        crust = 'Thin'
+    if crust == 1:
+        crust = 'Cheesy'
+    if crust == 2:
+        crust = "BEETLE CARAPACE"
+    return crust
+
+
+# Here is where we determine which sauce the user selected.
+def sauce_translation(sauce):
+    if sauce == 0:
+        sauce = 'Tomato'
+    if sauce == 1:
+        sauce = 'Pesto'
+    if sauce == 2:
+        sauce = "ADRENOCHROME"
+    return sauce
+
+
+# Here is where we determine which size the user selected.
+def size_translation(size):
+    if size == 0:
+        size = 'Small'
+    if size == 1:
+        size = 'Medium'
+    if size == 2:
+        size = "GLUTTONY"
+    return size
+
+
+# Here is where we determine which toppings the user selected.
+def topping_translation(top1, top2, top3):
+    if top1 == 1:
+        top1 = 'pepperoni'
+    else:
+        top1 = 'no pepperoni'
+    if top2 == 1:
+        top2 = 'Mushrooms'
+    else:
+        top2 = 'no mushrooms'
+    if top3 == 1:
+        top3 = 'LAB DISH STEM CELLS'
+    else:
+        top3 = 'no LAB DISH STEM CELLS. YOUR LOSS'
+    return top1, top2, top3
+
+
+# Method for adjusting the price according to the size the user selected.
+def size_price(size):
+    if size == 1:
+        size = 1.5
+    elif size == 2:
+        size = 3
+    else:
+        size = 0
+    return size
+
+
+# Method for adjusting the price according to how many toppings the user selected.
+def topping_pricer(counter):
+    if counter == 0:
+        counter = 0
+    if counter == 1:
+        counter = 0.5
+    if counter == 2:
+        counter = 1
+    if counter == 3:
+        counter = 1.5
+    return counter
