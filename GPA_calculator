@@ -1,0 +1,87 @@
+from guiClassWork import *
+
+def main():
+    my_gui = Gui_scores()
+
+
+main()
+
+# Code for class object below
+
+#Stanley G. Zezotarski
+import tkinter
+import tkinter.messagebox
+
+class Gui_scores:
+
+    def __init__(self):
+        self._main_window = tkinter.Tk()
+        self._main_window.title("Test Average")
+
+        #Creating the string variable to hold the test average.
+        self._string_var = tkinter.StringVar()
+
+        #Initializing the frames for organization.
+        self._one_frame = tkinter.Frame(self._main_window)
+        self._two_frame = tkinter.Frame(self._main_window)
+        self._three_frame = tkinter.Frame(self._main_window)
+        self._four_frame = tkinter.Frame(self._main_window)
+        self._five_frame = tkinter.Frame(self._main_window)
+
+        self._answer_label = tkinter.Label(self._four_frame, width=25, textvariable=self._string_var)
+
+        #Creating the labels for the test scores.
+        self._test_one = tkinter.Label(self._one_frame, text="Score for Test 1:")
+        self._test_two = tkinter.Label(self._two_frame, text="Score for Test 2:")
+        self._test_three = tkinter.Label(self._three_frame, text="Score for Test 3:")
+        self._average_label = tkinter.Label(self._four_frame, text="Average: ")
+        self._calculate_label = tkinter.Label(self._five_frame)
+
+        #Code for the calculate button
+        self._calculate_button = tkinter.Button(self._five_frame, text='Calculate', command=self.calculate_function)
+
+        #Creating the entry boxes for the test scores.
+        self._entry_one = tkinter.Entry(self._one_frame)
+        self._entry_two = tkinter.Entry(self._two_frame)
+        self._entry_three = tkinter.Entry(self._three_frame)
+
+        ###Packing everything.###
+
+        #The frame packages.
+        self._one_frame.pack(padx=10, pady=10)
+        self._two_frame.pack(padx=10, pady=10)
+        self._three_frame.pack(padx=10, pady=10)
+        self._four_frame.pack(padx=10, pady=10)
+        self._five_frame.pack(padx=10, pady=10)
+
+        #The label packages.
+        self._test_one.pack(side='left')
+        self._test_two.pack(side='left')
+        self._test_three.pack(side='left')
+        self._average_label.pack(side='left')
+        self._calculate_label.pack()
+
+        #The entry packages.
+        self._entry_one.pack()
+        self._entry_two.pack()
+        self._entry_three.pack()
+
+        #Packing the calculate button
+        self._calculate_button.pack()
+        self._answer_label.pack()
+
+        #And of course the main loop.
+        self._main_window.mainloop()
+
+        #Creating the calculate function.
+
+    def calculate_function(self):
+        try:
+            test1 = float(self._entry_one.get())
+            test2 = float(self._entry_two.get())
+            test3 = float(self._entry_three.get())
+            average = (test1 + test2 + test3) / 3
+
+            self._string_var.set(str(round(average, 3)))
+        except:
+            tkinter.messagebox.showinfo("Error", "Please enter numbers only please.")
