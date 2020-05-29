@@ -1,0 +1,41 @@
+from random import randint, choice
+
+class Die:
+    #Define/Initialize attributes
+    def __init__(self):
+        self.sides = 20
+
+    def roll_die(self):
+        sides2 = self.sides
+        side = randint(1, sides2)
+        print(f" it landed on {str(side)}")
+
+die_roll = Die()
+print(die_roll.roll_die())
+
+my_tuple = ("S", "A", "g", "o", "q", 1, 2, 32, 23, 9, 18, 19, 100, 89, 77)
+winner = []
+x = 4
+while x > 0:
+    winner.append(choice(my_tuple))
+    x -= 1
+my_ticket = ["S", "A", "g", "o"]
+
+z = 0
+while True:
+    if my_ticket != winner:
+        my_ticket.clear()
+        y = 4
+        z += 1
+        print("Not yet")
+        while y > 0:
+            my_ticket.append(choice(my_tuple))
+            y -= 1
+            #print(str(y))
+            #print(winner)
+    else:
+        print(f"It took {str(z)} tries to win this lottery.")
+        break
+
+
+#print(f" The winning ticket is: {winner}")
