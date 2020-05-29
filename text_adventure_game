@@ -1,0 +1,210 @@
+#Stanley G Zezotarski
+
+import random
+#Importing random for the take damage method.
+from Player import *
+
+from Enemies import *
+
+def main():
+    create_character()
+
+def create_character():
+    character = player(input("What would you like to name your character? ").title(), int(input("Please "
+            "enter your armor value. It must be between 0 and 100. ")),
+            int(input("Please enter your weapon strength. It must be between 0 and 100. ")))
+    clearing_battle(character)
+
+def clearing_battle(character):
+    minion1 = Minion("Minion1")
+    minion2 = Minion("Minion2")
+    minion3 = Minion("Minion3")
+    boss = Boss()
+    print("You've made it to the unexplored forest. After exploring for several hours you hear a \n"
+                          "strange clamor. As you go to investigate, you find yourself in an oddly serene clearing. \n"
+                          "There is a small pond with a large willow by it's side, taking in the scene you realize \n"
+                          " the clamor has mysteriously died down. As you note this, an overlord and his minions emerge \n"
+                          "from the trees. With an ominous silence they begin their advance toward you, weapons drawn \n"
+                          "and catching  the dim light filtering  down through the forests canopy. \n")
+    while True:
+        if character.health <= 0:
+            break
+        print(character)
+        persevere = input("What would you like to do? Type a to attack or q to run away. \n").lower()
+        if persevere == 'q':
+            print("You were the only one who could stop the elven genocide, and you ran... Good job. I'm sure "
+                  "they'll be fine.") #Perhaps implement something where you lose exp for running
+            break
+        if persevere == 'a':
+           if minion1.health < 0:
+               if minion2.health < 0:
+                   if minion3.health < 0:
+                       if boss.health <= 0:
+                           break
+                       else:
+                           boss.take_damage(character.attack())
+                           character.take_damage(boss.attack())
+                           print(boss)
+                   else:
+                       character.take_damage(minion3.attack())
+                       minion3.take_damage(character.attack())
+                       print(minion3)
+               else:
+                   character.take_damage(minion2.attack())
+                   minion2.take_damage(character.attack())
+                   print(minion2)
+           else:
+               character.take_damage(minion1.attack())
+               minion1.take_damage(character.attack())
+               print(minion1)
+
+
+
+
+main()
+
+# Code for the player class
+
+import random
+
+class player:
+    def __init__(self, name, armor_str, weapon_str):
+        #self.validate_name(name)
+        self.validate_armor_str(armor_str)
+        self.validate_weapon_str(weapon_str)
+        self.name = name
+        self.armor_str = armor_str
+        self.weapon_str = weapon_str
+        self.health = 100
+        self.xp_threshhold = 100
+        self.level = 1
+
+    #def validate_name(self, name):
+    #    if not name.isalpha():
+    #        raise ValueError("Your character name must be a string.")
+
+    def validate_armor_str(self, armor_str):
+        #if not armor_str.isdigit():
+        #    raise ValueError("Armor value must be an integer between 0 and 100.")
+        if armor_str > 100:
+            raise ValueError("Armor can't be that strong.")
+        if armor_str < 0:
+            raise ValueError("Armor can't be that weak.")
+
+
+    def validate_weapon_str(self, weapon_str):
+        #if not armor_str.isdigit():
+        #    raise ValueError("Weapon value must be an integer between 0 and 100.")
+        if weapon_str > 100:
+            raise ValueError("Weapons can't be that strong.")
+        if weapon_str < 0:
+            raise ValueError("Weapons can't be that weak.")
+
+    def take_damage(self, damage):
+        print("You have been attacked.")
+        if self.armor_str > 0:
+            self.armor_str = self.armor_str - damage
+        if self.armor_str < 0:
+            self.health = self.health - damage
+        if self.health <= 0:
+            print("You died. You're pretty bad at this.")
+
+    def level_up(self, xp):
+        if xp >= 100:
+            self.level += 1
+            self.xp_threshhold += 15
+            self.health += 15
+
+
+    def __str__(self):
+        return f"Name: {self.name} \n Current health: {self.health} \n " \
+               f"Current armor value: {str(self.armor_str)} \n" \
+               f"Current weapon value: {str(self.weapon_str)}"
+
+    def attack(self):
+        damage = random.randint(1, self.weapon_str)
+        print(f"You attack for {damage} damage.")
+        return damage
+
+
+    @property #Getter
+    def armor_str(self):
+        return self._armor_str
+
+    @armor_str.setter #Setter
+    def armor_str(self, armor_str):
+        #self.validate_armor_str(armor_str)
+        self._armor_str = armor_str
+
+@property #Getter
+def weapon_str(self):
+    return self._weapon_str
+
+@weapon_str.setter #Setter
+def armor_str(self, weapon_str):
+    self.validate_weapon_str(weapon_str)
+    self._weapon_str = weapon_str()
+
+
+# Code for the enemy classes below
+
+import random
+
+class Minion:
+    def __init__(self, name):
+        self.name = name
+        self.health = 25
+        self.strength = 15
+
+    def take_damage(self, damage):
+        self.health = self.health - damage
+        if self.health <= 0:
+            print("You've slain a minion.'")
+        else:
+            self.health = self.health - damage
+            print(f"The minion has {self.health} health remaining.")
+
+    def attack(self):
+        damage = random.randint(1, self.strength)
+        print(f"Minion striks for {damage} damage!")
+        return damage
+
+    def __str__(self):
+        return f"Name: {self.name} \n Current health: {self.health} \n"
+
+
+class Boss:
+    def __init__(self):
+        self.name = "Boss"
+        self.health = 200
+        self.strength = 50
+        self.armor_str = 50
+
+    def take_damage(self, damage):
+        if self.armor_str > 0:
+            self.armor_str = self.armor_str - damage
+        if self.armor_str < 0:
+            self.health = self.health - damage
+            print(f"The boss has {self.health} remaining.")
+        if self.health <= 0:
+            print("You have slain the overlord and saved the elves! They reward you "
+                  "by pillorying you with arrows, human scum! ... Maybe the overlord wasn't the bad guy...?")
+        #if self.health >= 0:
+        #    self.health = self.health - damage
+
+
+    def attack(self):
+        damage = random.randint(1, self.strength)
+        print(f"The boss attacks for {damage} damage.")
+        self.strength += 5
+        return damage
+
+    def __str__(self):
+        return f"Name: {self.name} \n Current health: {self.health} \n " \
+               f"Current armor value: {str(self.armor_str)} \n" \
+
+
+@property #Getter
+def armor_str(self):
+    return self.armor_str
+
