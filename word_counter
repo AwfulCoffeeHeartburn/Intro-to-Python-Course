@@ -1,0 +1,21 @@
+def main():
+
+    word_line = {}
+    with open("Quote.txt") as file:
+
+        for lineNum, word in enumerate(file.readlines()):
+            for word in word.split():
+                if word not in word_line:
+                    word_line[word] = set()
+                    word_line[word].add((lineNum + 1))
+                else:
+                    word_line[word].add(lineNum + 1)
+
+
+    for key, value in word_line.items():
+        print(key + " appears on line(s): " + str(value))
+
+
+main()
+
+
