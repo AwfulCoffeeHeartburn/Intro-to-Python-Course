@@ -1,0 +1,51 @@
+#I have done two and I'd appreciate your feedback on which one is better.
+#One has less lines of code but is more error prone.
+#Is there a way to keep it less error prone but shorten the program's length?
+
+
+def main():
+    name_pops = {}
+    while True:
+        city = input("Please enter the name of a city. Press 'q' to quit.")
+        if city == 'q':
+            break
+        if city.isdigit():
+            print("Please enter an actual city.")
+        if city.isalpha():
+            population = input("Please enter the population of that city.")
+            while True:
+                if population.isalpha():
+                    print("Please enter an integer.")
+                    population = input("Please enter the population of that city.")
+                if population.isdigit():
+                    name_pops[city] = int(population)
+                    break
+    name_pops_copy = {key:value for key, value in name_pops.items() if value > 2000000}
+    for key, value in name_pops_copy.items():
+        print("The population of " + key + " is: " + str(value) + ".")
+
+
+main()
+
+'''
+def main():
+    name_pops = {}
+    while True:
+        city = input("Please enter the name of a city. Press 'q' to quit.")
+        if city == 'q':
+            break
+        elif city.isdigit():
+            print("Please enter an actual city.")
+        else:
+            population = input("Please enter the population of that city.")
+            if population.isalpha():
+                print("Please enter an integer.")
+            else:
+                name_pops[city] = int(population)
+    name_pops_copy = {key:value for key, value in name_pops.items() if value > 2000000}
+    for key, value in name_pops_copy.items():
+        print("The population of " + key + " is: " + str(value) + ".")
+
+
+main()
+'''
