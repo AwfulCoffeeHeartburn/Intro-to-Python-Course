@@ -1,0 +1,78 @@
+# Stanley G. Zezotarski
+from classes_final_class import *
+
+def main():
+    # Initializing the question objects.
+    question1 = Question("Who is the current world chess champion?", "Magnus Carlson", "My neighbor's dog", "Kanye West",
+                         "Sweden's Education System", 1)
+    question2 = Question("Who wrote the philosophical text known as 'The Republic'?", "Frederick Nietzsche''", "Plato",
+                         "Socrates", "My neighbor's dog", 2)
+    question3 = Question( "Who can't think of a question right now?", "Stan", "The drug addled homeless man at the gas"
+                                                                              " station",
+                                               "A broken toilet", "My neighbor's dog", 1)
+    question4 = Question("Arbitrary conglomeration of words followed by a question mark?", "aed", "fgd", "bnh", "lki", 1)
+
+    # Placing the question objects in a list.
+    questions = [
+        question1, question2, question3, question4
+    ]
+
+    # Initializing player score counters.
+    player1_score = 0
+    player2_score = 0
+
+    # Creating a for loop to cycle through each question, increment scores and inform the players of their rectitude.
+    for question in questions:
+        print(question)
+        if question.guess(int(input("Player One, please select your answer. "))):
+            player1_score += 1
+            answer1 = 'correct'
+        else:
+            answer1 = 'incorrect'
+        if question.guess(int(input("Player Two, please select your answer. "))):
+            player2_score += 1
+            answer2 = 'correct'
+        else:
+            answer2 = 'incorrect'
+        print(f"\nPlayer One, your answer was {answer1}.\nPlayer Two, your answer was {answer2}\n")
+
+        # Feedback message for the players on their performance.
+    print(f"Player One, your total score is: {str(player1_score)}"
+          f"\nPlayer Two, your total score is: {str(player2_score)}\n")
+
+    # Conditional statements determining the victor, or if the contest is a draw.
+    if player1_score == player2_score:
+        print("We have a draw.")
+    elif player1_score > player2_score:
+        print("Player One is victorious!")
+    else:
+        print("Player Two is victorious!")
+
+
+main()
+
+#The following is the code for the class file
+class Question:
+    def __init__(self, question, answer1, answer2, answer3, answer4, correct):
+        self._question = question
+        self._answer1 = answer1
+        self._answer2 = answer2
+        self._answer3 = answer3
+        self._answer4 = answer4
+        self._correct = correct
+
+    def __str__(self):
+        return f"{self._question} \nSelect your answer by pressing 1 through 4\n\n" \
+               f"1: {self._answer1} \n" \
+               f"2: {self._answer2} \n" \
+               f"3: {self._answer3} \n" \
+               f"4: {self._answer4}"
+
+    def guess(self, num):
+        if num > 0 and num < 5:
+            if self._correct == int(num):
+                return True
+            else:
+                return False
+        else:
+            return f"That is an invalid response."
